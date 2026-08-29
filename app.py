@@ -1,19 +1,19 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 
-st.set_page_config(page_title="A/B Testing Analytics", layout="wide")
-st.title("Product Growth A/B Testing")
-st.caption("Developed b:Abdelhaq El Mandouli - Data Analyst")
+
+st.set_page_config(page_title="A/B Testing Analytics Project", layout="wide")
+st.title("📊 Project: Product Growth & A/B Testing Analytics")
+st.caption("Developed by: Abdelhaq El Mandouli - Data Analyst")
 
 st.markdown("""
 ### 🎯 Project Overview
-This interactive web application showcase the final results of an **A/B Testing Analysis** performed on large e-commercedataset (>290k visitors).
-The goal of this project is to statistically evaluate whether a new web page (Treatment) outperforms the old web page (Cotrol) based on conversion rates.
+This interactive web application showcases the final results of an **A/B Testing analysis** performed on a large e-commerce dataset (>290,000 visitors). 
+The goal of this project is to statistically evaluate whether a newly designed landing page (Treatment) outperforms the old web page (Control) based on conversion rates.
 """)
 
 st.markdown("---")
+
 
 @st.cache_data 
 def load_data():
@@ -40,21 +40,13 @@ st.dataframe(df.head(50), use_container_width=True)
 st.markdown("---")
 
 
-st.subheader("📅 Daily Conversion Rate Trend (Time-Series Analysis)")
+st.subheader("📅 Daily Conversion Rate Trend (Interactive Chart)")
 
 
 daily_data = df.groupby(['date', 'group'])['converted'].mean().unstack() * 100
 
 
-fig, ax = plt.subplots(figsize=(12, 4.5))
-sns.lineplot(data=daily_data, marker='o', ax=ax)
-ax.set_title("Daily CR: Control vs Treatment", fontsize=12)
-ax.set_ylabel("Conversion Rate (%)")
-ax.set_xlabel("Date")
-ax.grid(True, linestyle='--', alpha=0.5)
-
-
-st.pyplot(fig)
+st.line_chart(daily_data, y=["control", "treatment"])
 
 
 st.markdown("---")
@@ -64,4 +56,5 @@ st.info("""
 * **Finding:** The slight drop in the new page's conversion rate is statistically proven to be **random noise**, not a permanent change.
 * **Business Decision:** We failed to reject the null hypothesis. The final data-driven recommendation is to **stick with the old page** to avoid unnecessary development costs and safeguard existing revenue.
 """)
+
 
